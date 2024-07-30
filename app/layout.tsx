@@ -39,7 +39,7 @@ export default function RootLayout({
             appearance: {
               theme: "light",
               accentColor: "#676FFF",
-              logo: "public/assets/logo-no-background.png",
+              logo: "https://ibb.co/hmZGqGL",
             },
             embeddedWallets: {
               createOnLogin: "users-without-wallets",

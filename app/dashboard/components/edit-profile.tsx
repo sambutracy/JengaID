@@ -120,7 +120,7 @@ export default function EditProfile() {
       ["x", "instagram", "youtube", "tiktok", "linkedin"].includes(name)
     ) {
       const pattern = {
-        x: "^https?:\\/\\/(www\\.)?twitter\\.com\\/[A-Za-z0-9_]{1,15}$",
+        x: "^https?:\\/\\/(www\\.)?x\\.com\\/[A-Za-z0-9_]{1,15}$",
         instagram: "^https?:\\/\\/(www\\.)?instagram\\.com\\/[A-Za-z0-9_.]+$",
         youtube:
           "^https?:\\/\\/(www\\.)?youtube\\.com\\/(channel\\/|user\\/)?[A-Za-z0-9_-]+$",
@@ -284,7 +284,7 @@ export default function EditProfile() {
       <div>
         <div className="md:text-4xl text-xl font-medium w-3/3 pb-3">
           Editing your DID is easy with{" "}
-          <span className="text-sky-500">identiFi</span>
+          <span className="text-sky-500">jengaID</span>
         </div>
         <Toaster />
         <UserProfileDisplay formData={formData} countryCode={countryCode} />

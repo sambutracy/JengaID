@@ -79,8 +79,8 @@ const tabs = [
     icon: (
       <PiFileThin className="text-3xl mr-2 text-yellow-600 bg-yellow-100 p-1 rounded-md" />
     ),
-    name: "Find Jobs",
-    description: "Discover developer opportunities.",
+    name: "Find missing person online Identity",
+    description: "Reduce stress identify missing people ",
     more: (
       <div className="text-yellow-600 flex items-center">
         Learn more <PiArrowRight className="ml-1 text-sm" />
