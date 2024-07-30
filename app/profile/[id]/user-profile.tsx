@@ -189,7 +189,7 @@ const UserProfile = (params: any) => {
                   alt="Bordered avatar"
                 />
                 <p className="font-bold text-lg text-gray-700 py-2">
-                  @{`${formData.username}` || `UserNotFound`}
+                  @{`${formData.username}` || `testuser`}
                 </p>
                 <p className="text-sm text-gray-700 py-1">
                   {formData.info || "We making digital Identity easier..."}
