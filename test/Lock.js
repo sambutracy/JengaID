@@ -7,9 +7,9 @@ describe("jengaID", function () {
 
   beforeEach(async function () {
     [owner, user1, user2] = await hre.ethers.getSigners();
-    const jengaID = await hre.ethers.getContractFactory("jengaID");
-  "jengaID = await"jengaID.deploy();
-    await"jengaID.deployed();
+    const JengaIDFactory = await hre.ethers.getContractFactory("jengaID");
+    jengaID = await JengaIDFactory.deploy();
+    await jengaID.deployed();
   });
 
   it("Should create a new user", async function () {
@@ -47,7 +47,7 @@ describe("jengaID", function () {
       dateOfBirth: true,
     };
 
-    await"jengaID.createUser(
+    await jengaID.createUser(
       "johndoe",
       basicInfo,
       professionalInfo,
@@ -55,7 +55,7 @@ describe("jengaID", function () {
       visibility
     );
 
-    const user = await"jengaID.getUserByUsername("johndoe");
+    const user = await jengaID.getUserByUsername("johndoe");
     expect(user.basicInfo.firstName).to.equal("John");
     expect(user.basicInfo.lastName).to.equal("Doe");
     expect(user.basicInfo.email).to.equal("john@example.com");
@@ -96,7 +96,7 @@ describe("jengaID", function () {
       dateOfBirth: true,
     };
 
-    await"jengaID.createUser(
+    await jengaID.createUser(
       "johndoe",
       basicInfo,
       professionalInfo,
@@ -109,7 +109,7 @@ describe("jengaID", function () {
     basicInfo.lastName = "Smith";
     professionalInfo.jobTitle = "Product Manager";
 
-    await"jengaID.editUser(
+    await jengaID.editUser(
       "johndoe",
       basicInfo,
       professionalInfo,
@@ -117,7 +117,7 @@ describe("jengaID", function () {
       visibility
     );
 
-    const user = await"jengaID.getUserByUsername("johndoe");
+    const user = await jengaID.getUserByUsername("johndoe");
     expect(user.basicInfo.firstName).to.equal("Jane");
     expect(user.basicInfo.lastName).to.equal("Smith");
     expect(user.professionalInfo.jobTitle).to.equal("Product Manager");
@@ -158,7 +158,7 @@ describe("jengaID", function () {
       dateOfBirth: true,
     };
 
-    await"jengaID
+    await jengaID
       .connect(user1)
       .createUser(
         "johndoe",
@@ -168,7 +168,7 @@ describe("jengaID", function () {
         visibility
       );
 
-    const user = await"jengaID.connect(user1).getUserByAddress(user1.address);
+    const user = await jengaID.connect(user1).getUserByAddress(user1.address);
     expect(user.basicInfo.firstName).to.equal("John");
     expect(user.basicInfo.lastName).to.equal("Doe");
     expect(user.basicInfo.email).to.equal("john@example.com");
@@ -209,7 +209,7 @@ describe("jengaID", function () {
       dateOfBirth: true,
     };
 
-    await"jengaID.createUser(
+    await jengaID.createUser(
       "johndoe",
       basicInfo,
       professionalInfo,
@@ -218,7 +218,7 @@ describe("jengaID", function () {
     );
 
     await expect(
-    "jengaID
+      jengaID
         .connect(user2)
         .createUser(
           "johndoe",
@@ -265,7 +265,7 @@ describe("jengaID", function () {
       dateOfBirth: true,
     };
 
-    await"jengaID.createUser(
+    await jengaID.createUser(
       "johndoe",
       basicInfo,
       professionalInfo,
@@ -273,9 +273,9 @@ describe("jengaID", function () {
       visibility
     );
 
-    await"jengaID.setVisibility("johndoe", false, false, false, false, false);
+    await jengaID.setVisibility("johndoe", false, false, false, false, false);
 
-    const updatedVisibility = await"jengaID.getVisibility("johndoe");
+    const updatedVisibility = await jengaID.getVisibility("johndoe");
     expect(updatedVisibility.education).to.equal(false);
     expect(updatedVisibility.workHistory).to.equal(false);
     expect(updatedVisibility.phoneNumber).to.equal(false);
