@@ -1,5 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
-const fs = require("fs");
+const fs = require('fs')
 const privateKey = fs.readFileSync("secrete.txt").toString();
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -13,8 +13,8 @@ module.exports = {
       accounts: [privateKey],
       gasPrice: 1000000000,
     },
-    BitTorrent: {
-      url: "https://pre-rpc.bt.io/",
+    ThetaTorrent: {
+      url: "https://eth-rpc-api.thetatoken.org/rpc",
       accounts: [privateKey],
       gasPrice: 1000000000,
     },
