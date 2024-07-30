@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar/navbar";
-import ContactForm from "./contact-form";
+import ContactForm from "./contract-form";
 import Footer from "@/components/footer";
 
 const OnBoard = () => {
