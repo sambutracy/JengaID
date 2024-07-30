@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="lg:flex  lg:space-x-32 md:px-0 ">
         <div className="pt-4">
           <span className="mr-2 text-xl font-bold">
-            Identi<span className="text-sky-600">Fi </span>
+            jenga<span className="text-sky-600">ID </span>
           </span>
           <div className="flex  space-x-2">
             <PiInstagramLogoFill className="text-2xl text-gray-500" />

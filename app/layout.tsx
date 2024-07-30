@@ -7,21 +7,21 @@ import { PrivyProvider } from "@privy-io/react-auth";
 const font = Outfit({ subsets: ["latin"] });
 
 const ThetaTorrent = defineChain({
-  id: 361,
-  name: "Theta Mainnet",
-  network: "Theta Mainnet",
+  id: 365,
+  name: "Theta Testnet",
+  network: "Theta Testnet",
   nativeCurrency: {
     decimals: 18,
-    name: "Theta Mainnet",
+    name: "Theta Testnet",
     symbol: "TFUEL",
   },
   rpcUrls: {
     default: {
-      http: ["https://eth-rpc-api.thetatoken.org/rpc"],
+      http: ["https://eth-rpc-api-testnet.thetatoken.org/rpc"],
     },
   } as any,
   blockExplorers: {
-    default: { name: "Explorer", url: "https://explorer.thetatoken.org" },
+    default: { name: "Explorer", url: "https://testnet-explorer.thetatoken.org" },
   },
 }) as any;
 
@@ -39,7 +39,7 @@ export default function RootLayout({
             appearance: {
               theme: "light",
               accentColor: "#676FFF",
-              logo: "https://logo.com/view/logo_2f319d72-e214-44da-9176-97743b3e3b",
+              logo: "public/assets/logo-no-background.png",
             },
             embeddedWallets: {
               createOnLogin: "users-without-wallets",

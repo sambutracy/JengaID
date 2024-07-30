@@ -18,7 +18,7 @@ import {
          hover:cursor-pointer pt-6"
         ></div>
       ),
-      image: "/images/company-wiki.png",
+      image: "/images/companywiki.png",
     },
     {
       icon: <PiUserCheck className="text-2xl text-sky-600" />,

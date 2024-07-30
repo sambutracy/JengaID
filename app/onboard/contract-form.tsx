@@ -289,7 +289,7 @@ export default function CreateProfile() {
       <div>
         <div className="md:text-4xl text-xl font-medium w-3/3 pb-3">
           Creating a DID is a breeze with{" "}
-          <span className="text-sky-500">identiFi</span>
+          <span className="text-sky-500">jengaID</span>
         </div>
         <Toaster />
         <UserProfileDisplay formData={formData} countryCode={countryCode} />

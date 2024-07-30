@@ -78,7 +78,7 @@ const Section = () => {
           <FormControl>
             <Input
               className="border-2 border-black p-5"
-              placeholder="Enter identiFiDID eg: satoshinakamoto"
+              placeholder="Enter jengaIDDID eg: satoshinakamoto"
               onChange={(e) => setSearchVal(e.target.value)}
               value={searchVal}
             />

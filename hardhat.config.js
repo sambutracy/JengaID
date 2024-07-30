@@ -14,7 +14,7 @@ module.exports = {
       gasPrice: 1000000000,
     },
     ThetaTorrent: {
-      url: "https://eth-rpc-api.thetatoken.org/rpc",
+      url: "https://eth-rpc-api-testnet.thetatoken.org/rpc",
       accounts: [privateKey],
       gasPrice: 1000000000,
     },
@@ -40,4 +40,4 @@ module.exports = {
   loggingEnabled: true,
 };
 
-// npx hardhat ignition deploy ./ignition/modules/Lock.js --network BitTorrent
+

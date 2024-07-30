@@ -39,7 +39,7 @@ const tabs = [
     ),
     name: "AI",
     feature: "Now with Q&A",
-    description: "Ask literally anything. identiBot Will answer.",
+    description: "Ask literally anything. jengaBot Will answer.",
     more: (
       <div className="text-purple-600 flex items-center">
         Learn more <PiArrowRight className="ml-1 text-sm" />
@@ -210,7 +210,7 @@ const UserProfile = (params: any) => {
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
                   <IconMail width={17} height={17} />
                   <p className="text-sm">
-                    {formData.email || "identiFi@gmail.com"}
+                    {formData.email || "tracysambut@gmail.com"}
                   </p>{" "}
                 </div>
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
