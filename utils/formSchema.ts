@@ -16,8 +16,8 @@ export const FormSchema = z.object({
     .string()
     .url()
     .regex(
-      /^https?:\/\/(www\.)?twitter\.com\/[A-Za-z0-9_]{1,15}$/,
-      "Invalid Twitter URL"
+      /^https?:\/\/(www\.)?x\.com\/[A-Za-z0-9_]{1,15}$/,
+      "Invalid X(Twitter) URL"
     )
     .optional(),
   instagram: z

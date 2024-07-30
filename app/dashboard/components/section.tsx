@@ -215,7 +215,7 @@ const Section = () => {
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
                   <IconMail width={17} height={17} />
                   <p className="text-sm">
-                    {formData.email || "identiFi@gmail.com"}
+                    {formData.email || "jengaID@gmail.com"}
                   </p>{" "}
                 </div>
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
