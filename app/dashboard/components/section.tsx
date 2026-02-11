@@ -136,8 +136,19 @@ const Section = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       try {
-        let userInfo = (await getUserByAddress(wallets[0].address)) as any;
-        let username = (await getUsernameByAddress(wallets[0].address)) as any;
+        const wallet = wallets[0];
+        if (!wallet) {
+          return;
+        }
+        const provider = await wallet.getEthersProvider();
+        let userInfo = (await getUserByAddress(
+          wallet.address,
+          provider
+        )) as any;
+        let username = (await getUsernameByAddress(
+          wallet.address,
+          provider
+        )) as any;
         setFormData({
           first_name: userInfo.basicInfo.firstName,
           last_name: userInfo.basicInfo.lastName,
@@ -167,7 +178,7 @@ const Section = () => {
       }
     };
     getUserInfo();
-  }, []);
+  }, [toast, wallets]);
 
   const ref = useRef(null);
 
