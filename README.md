@@ -50,6 +50,14 @@ To set up the project locally, follow these steps:
     npm install
     ```
 
+3.5 **Configure environment variables:**
+
+    Create a `.env.local` file and set:
+
+    ```sh
+    PINATA_JWT=your_pinata_jwt
+    ```
+
 4. **Start the development server:**
 
     ```sh

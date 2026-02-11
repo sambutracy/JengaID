@@ -13,11 +13,10 @@ import { getUserByAddress } from "@/utils/queries";
 
 const ActionButtons = () => {
   const { ready, authenticated, login, logout } = usePrivy();
-  const disableLogin = !ready || (ready && authenticated);
   const { wallets } = useWallets();
 
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [UserInfo, setUserInfo] = useState("");
+  const [hasIdentity, setHasIdentity] = useState(false);
   const toggleDropdown = () => {
     setDropdownVisible(!isDropdownVisible);
   };
@@ -27,23 +26,28 @@ const ActionButtons = () => {
   };
   useEffect(() => {
     const getUserInfo = async () => {
-      let userInfo = (await getUserByAddress(
-        ready ? wallets[0]?.address : "0x0"
-      )) as any;
-      setUserInfo(userInfo);
+      if (!ready || !authenticated || !wallets[0]) {
+        setHasIdentity(false);
+        return;
+      }
+
+      try {
+        const provider = await wallets[0].getEthersProvider();
+        await getUserByAddress(wallets[0].address, provider);
+        setHasIdentity(true);
+      } catch {
+        setHasIdentity(false);
+      }
     };
 
     getUserInfo();
-  }, [ready, authenticated]);
-
-  console.log(UserInfo == "User does not exist.");
-  console.log(authenticated);
+  }, [ready, authenticated, wallets]);
 
   return (
     <div className="pr-2">
       <div className=" items-center justify-center flex ">
         <div className="flex xl:space-x-4">
-          {authenticated && UserInfo !== "User does not exist." ? (
+          {authenticated && hasIdentity ? (
             <>
               <Link
                 href={"/dashboard"}
@@ -66,7 +70,7 @@ const ActionButtons = () => {
                 |
               </div>
             </>
-          ) : authenticated && UserInfo == "User does not exist." ? (
+          ) : authenticated && !hasIdentity ? (
             <>
               <Link
                 href={"/onboard"}
@@ -77,7 +81,7 @@ const ActionButtons = () => {
          
           "
               >
-                <div className="">Get DID</div>
+                <div className="">Create DID</div>
               </Link>
               <div
                 className="font-thin     
@@ -94,19 +98,6 @@ const ActionButtons = () => {
           )}
         </div>
         <div className="flex lg:space-x-2 items-center pr-4">
-          <Link href={"/free"}>
-            <Button
-              variant={"outline"}
-              className="
-            lg:flex
-            items-center
-            hidden
-                border-none 
-                text-md
-                
-                "
-            ></Button>
-          </Link>
           {authenticated ? (
             <Button className="hidden lg:block " onClick={logout}>
               Disconnect

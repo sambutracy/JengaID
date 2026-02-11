@@ -69,33 +69,47 @@ export default function EditProfile() {
 
   useEffect(() => {
     const getUserInfo = async () => {
-      let userInfo = (await getUserByAddress(wallets[0]?.address)) as any;
-      let username = (await getUsernameByAddress(wallets[0]?.address)) as any;
-      setFormData({
-        first_name: userInfo.basicInfo.firstName,
-        last_name: userInfo.basicInfo.lastName,
-        username: username,
-        email: userInfo.basicInfo.email,
-        home_address: userInfo.basicInfo.homeAddress,
-        date_of_birth: userInfo.basicInfo.dateOfBirth,
-        education: userInfo.professionalInfo.education,
-        work_history: userInfo.professionalInfo.workHistory,
-        phone_number: userInfo.basicInfo.phoneNumber,
-        job_title: userInfo.professionalInfo.jobTitle,
-        x: userInfo.socialLinks.x,
-        instagram: userInfo.socialLinks.instagram,
-        tiktok: userInfo.socialLinks.tiktok,
-        youtube: userInfo.socialLinks.youtube,
-        linkedin: userInfo.socialLinks.linkedin,
-        info: userInfo.professionalInfo.info,
-        skills: userInfo.professionalInfo.skills,
-        imageUrl: userInfo.professionalInfo.imageURL,
-      });
-      console.log(userInfo);
-      console.log(username);
+      const wallet = wallets[0];
+      if (!wallet) {
+        return;
+      }
+
+      try {
+        const provider = await wallet.getEthersProvider();
+        const userInfo = (await getUserByAddress(
+          wallet.address,
+          provider
+        )) as any;
+        const username = (await getUsernameByAddress(
+          wallet.address,
+          provider
+        )) as any;
+        setFormData({
+          first_name: userInfo.basicInfo.firstName,
+          last_name: userInfo.basicInfo.lastName,
+          username: username,
+          email: userInfo.basicInfo.email,
+          home_address: userInfo.basicInfo.homeAddress,
+          date_of_birth: userInfo.basicInfo.dateOfBirth,
+          education: userInfo.professionalInfo.education,
+          work_history: userInfo.professionalInfo.workHistory,
+          phone_number: userInfo.basicInfo.phoneNumber,
+          job_title: userInfo.professionalInfo.jobTitle,
+          x: userInfo.socialLinks.x,
+          instagram: userInfo.socialLinks.instagram,
+          tiktok: userInfo.socialLinks.tiktok,
+          youtube: userInfo.socialLinks.youtube,
+          linkedin: userInfo.socialLinks.linkedin,
+          info: userInfo.professionalInfo.info,
+          skills: userInfo.professionalInfo.skills,
+          imageUrl: userInfo.professionalInfo.imageURL,
+        });
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
     };
     getUserInfo();
-  }, []);
+  }, [wallets]);
 
   const [errors, setErrors] = useState<any>({});
   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
@@ -178,34 +192,33 @@ export default function EditProfile() {
 
   const handleImagesChange = async (files: File[]) => {
     const file = files[0];
+    if (!file) {
+      return;
+    }
+
     try {
       const form = new FormData();
       form.append("file", file);
-      form.append("pinataMetadata", JSON.stringify({ name: file.name }));
-      form.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
 
-      const options = {
+      const response = await fetch("/api/upload-image", {
         method: "POST",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJkMWJjNzRiNy00YWUzLTQ0ZmUtYjU1NS0wNGVkOTRlMTY1NzAiLCJlbWFpbCI6Im1lbmRzYWxiZXJ0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiOWI4NzA2ZTQ4MDMwYzE1MzRhZCIsInNjb3BlZEtleVNlY3JldCI6ImM5N2M4ODgyZDFiZDg1MDY5ZmU3M2Q0YmRkODhmMWZiMzFiYzU0YTQ2NjJkMGQ1Njk5Mjg4NzAxYjUxZThkMjAiLCJpYXQiOjE3MTYwNzQ3Mzd9.uL0vggNCb0Y0Zz42yQiZ4fBwG3kDAlGotZ2TgsMvyLc",
-        },
         body: form,
-      };
-
-      const response = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
-        options
-      );
+      });
 
       const responseData = await response.json();
-      if (responseData.error) {
-        throw new Error(responseData.error);
+
+      if (!response.ok || responseData.error) {
+        throw new Error(responseData.error || "Image upload failed.");
       }
-      const fileUrl = `https://gateway.pinata.cloud/ipfs/${responseData.IpfsHash}`;
-      setFormData((prev) => ({ ...prev, imageUrl: fileUrl }));
+
+      setFormData((prev) => ({ ...prev, imageUrl: responseData.fileUrl }));
     } catch (error) {
-      console.error("Error uploading image:", error);
+      const message =
+        error instanceof Error ? error.message : "Error uploading image.";
+      toast({
+        title: "Upload failed",
+        description: message,
+      });
     }
   };
 
@@ -256,12 +269,18 @@ export default function EditProfile() {
         throw new Error("Required fields are missing.");
       }
 
+      const wallet = wallets[0];
+      if (!wallet) {
+        throw new Error("Connect your wallet to update your identity.");
+      }
+      const provider = await wallet.getEthersProvider();
       const receipt = await editUser(
         formData.username,
         basicInfo,
         professionalInfo,
         socialLinks,
-        visibility
+        visibility,
+        provider
       );
       console.log("User updated:", receipt);
       toast({

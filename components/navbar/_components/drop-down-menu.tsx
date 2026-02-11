@@ -16,23 +16,27 @@ interface DropDownMenuProps {
 
 const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
   const { ready, authenticated, login, logout } = usePrivy();
-  const disableLogin = !ready || (ready && authenticated);
   const { wallets } = useWallets();
-  const [UserInfo, setUserInfo] = useState("");
+  const [hasIdentity, setHasIdentity] = useState(false);
 
-  const handleLinkClick = () => {
-    onClose();
-  };
   useEffect(() => {
     const getUserInfo = async () => {
-      let userInfo = (await getUserByAddress(
-        ready ? wallets[0]?.address : "0x0"
-      )) as any;
-      setUserInfo(userInfo);
+      if (!ready || !authenticated || !wallets[0]) {
+        setHasIdentity(false);
+        return;
+      }
+
+      try {
+        const provider = await wallets[0].getEthersProvider();
+        await getUserByAddress(wallets[0].address, provider);
+        setHasIdentity(true);
+      } catch {
+        setHasIdentity(false);
+      }
     };
 
     getUserInfo();
-  }, [ready, authenticated]);
+  }, [ready, authenticated, wallets]);
   return (
     <div className="w-screen h-screen bg-white  px-2 items-center justify-center absolute  right-0 xl:hidden">
       <Accordion
@@ -45,6 +49,7 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
       >
         <Link
           href={"/"}
+          onClick={onClose}
           className="
             flex
             flex-1
@@ -63,6 +68,7 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
 
         <Link
           href={"/jobs"}
+          onClick={onClose}
           className="
             flex
             flex-1
@@ -79,6 +85,7 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
 
         <Link
           href={"/verify-identity"}
+          onClick={onClose}
           className="
             flex
             flex-1
@@ -97,8 +104,8 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
 
       <div className="pt-12">
         <div className="  space-y-4 flex flex-col px-4">
-          {authenticated && UserInfo !== "User does not exist." ? (
-            <Link href={"/dashboard"}>
+          {authenticated && hasIdentity ? (
+            <Link href={"/dashboard"} onClick={onClose}>
               <Button
                 className="
               w-full
@@ -108,10 +115,10 @@ const DropdownMenu: React.FC<DropDownMenuProps> = ({ onClose }) => {
                 Dashboard
               </Button>
             </Link>
-          ) : authenticated && UserInfo == "User does not exist." ? (
-            <Link href={"/onboard"}>
+          ) : authenticated && !hasIdentity ? (
+            <Link href={"/onboard"} onClick={onClose}>
               <Button variant={"outline"} className="w-full">
-                Get DID
+                Create DID
               </Button>
             </Link>
           ) : (
