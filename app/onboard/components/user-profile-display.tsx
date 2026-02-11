@@ -36,16 +36,16 @@ const UserProfileDisplay: React.FC<UserProfileDisplayProps> = ({
             alt="Bordered avatar"
           />
           <p className="font-medium text-gray-700 py-2">
-            @{`${formData.username}` || `identiFiDID`}
+            @{formData.username || "your-did"}
           </p>
           <p className="text-sm text-gray-700 py-1">
-            {formData.info || "We making digital Identity easier..."}
+            {formData.info || "Securely manage your decentralized identity."}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-2 py-2 w-full">
           <div className="flex flex-row items-center space-x-2 bg-gray-100 px-3 py-2 rounded-lg">
             <IconBriefcase width={17} height={17} />
-            <p className="text-sm">{formData.job_title || "Company"}</p>
+            <p className="text-sm">{formData.job_title || "Identity Owner"}</p>
           </div>
           <div className="flex flex-row items-center space-x-2 bg-gray-100 px-3 py-2 rounded-lg">
             <IconMapPin width={17} height={17} />
@@ -55,12 +55,12 @@ const UserProfileDisplay: React.FC<UserProfileDisplayProps> = ({
         <div className="flex flex-col w-full ">
           <div className="flex flex-row items-center bg-gray-100 space-x-2 px-3 py-2 rounded-lg">
             <IconMail width={17} height={17} />
-            <p className="text-sm">{formData.email || "identiFi@gmail.com"}</p>
+            <p className="text-sm">{formData.email || "No email added"}</p>
           </div>
           <div className="flex flex-row items-center bg-gray-100 mt-2 space-x-2 px-3 py-2 rounded-lg">
             <IconPhone width={17} height={17} />
             <p className="text-sm">
-              {formData.phone_number || "+00 123 456 789"}
+              {formData.phone_number || "No phone added"}
             </p>
           </div>
         </div>

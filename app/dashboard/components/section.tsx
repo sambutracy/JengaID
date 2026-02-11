@@ -43,8 +43,8 @@ const tabs = [
       <PiSparkleLight className="text-3xl mr-2 text-purple-600 bg-purple-100 p-1 rounded-md" />
     ),
     name: "AI",
-    feature: "Now with Q&A",
-    description: "Ask literally anything. identiBot Will answer.",
+    feature: "Identity insights",
+    description: "Use AI guidance to strengthen your digital identity profile.",
     more: (
       <div className="text-purple-600 flex items-center">
         Learn more <PiArrowRight className="ml-1 text-sm" />
@@ -56,8 +56,8 @@ const tabs = [
     icon: (
       <PiBookOpenTextLight className="text-3xl mr-2 text-red-600 bg-red-100 p-1 rounded-md" />
     ),
-    name: "Create ID",
-    description: "Get your DID on the blockchain.",
+    name: "Create DID",
+    description: "Create and manage your decentralized identity on-chain.",
     more: (
       <div className="text-red-600 flex items-center">
         Learn more <PiArrowRight className="ml-1 text-sm" />
@@ -70,8 +70,8 @@ const tabs = [
     icon: (
       <PiTargetLight className="text-3xl mr-2 text-blue-600 bg-blue-100 p-1 rounded-md" />
     ),
-    name: "Privacy ",
-    description: "Control who sees your information",
+    name: "Privacy Controls",
+    description: "Control who can access identity data and credentials.",
     more: (
       <div className="text-blue-600 flex items-center">
         Learn more <PiArrowRight className="ml-1 text-sm" />
@@ -84,8 +84,8 @@ const tabs = [
     icon: (
       <PiFileThin className="text-3xl mr-2 text-yellow-600 bg-yellow-100 p-1 rounded-md" />
     ),
-    name: "Find Jobs",
-    description: "Discover developer opportunities.",
+    name: "Credential Verification",
+    description: "Verify credential authenticity before you trust or share data.",
     more: (
       <div className="text-yellow-600 flex items-center">
         Learn more <PiArrowRight className="ml-1 text-sm" />
@@ -205,17 +205,17 @@ const Section = () => {
                   alt="Bordered avatar"
                 />
                 <p className="font-bold text-lg text-gray-700 py-2">
-                  @{`${formData.username}` || `testuser`}
+                  @{formData.username || "your-did"}
                 </p>
                 <p className="text-sm text-gray-700 py-1">
-                  {formData.info || "We making digital Identity easier..."}
+                  {formData.info || "Securely manage your decentralized identity."}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 py-2 w-full">
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
                   <IconBriefcase width={17} height={17} />
-                  <p className="text-sm">{formData.job_title || "Company"} </p>
+                  <p className="text-sm">{formData.job_title || "Identity Owner"} </p>
                 </div>
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
                   <IconMapPin width={17} height={17} />
@@ -226,14 +226,14 @@ const Section = () => {
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
                   <IconMail width={17} height={17} />
                   <p className="text-sm">
-                    {formData.email || "jengaID@gmail.com"}
+                    {formData.email || "No email added"}
                   </p>{" "}
                 </div>
                 <div className="flex flex-row items-center space-x-2 bg-white px-3 py-2 rounded-lg">
                   <IconPhone width={17} height={17} />
                   <p className="text-sm">
                     {" "}
-                    {formData.phone_number || "+00 123 456 789"}{" "}
+                    {formData.phone_number || "No phone added"}{" "}
                   </p>{" "}
                 </div>
               </div>
@@ -247,7 +247,7 @@ const Section = () => {
                     About me
                   </p>
                   <p className="text-sm ">
-                    {formData.info || "We making digital Identity easier..."}
+                    {formData.info || "Securely manage your decentralized identity."}
                   </p>
                   <div className="grid grid-cols-2 pt-3 gap-2">
                     <div className="py-2">
@@ -257,7 +257,7 @@ const Section = () => {
                       </div>
                       <p className="text-xs font-semibold ">
                         {formData.education ||
-                          "Thomas Jeff High School, Stanford University"}
+                          "Add education details"}
                       </p>
                     </div>
                     <div className="py-2">
@@ -266,7 +266,7 @@ const Section = () => {
                         <p className="text-sm">Work History</p>
                       </div>
                       <p className="text-xs font-semibold ">
-                        {formData.work_history || "Twitch, Google, Apple"}
+                        {formData.work_history || "Add work history"}
                       </p>
                     </div>
                     <div className="py-2">
@@ -275,7 +275,7 @@ const Section = () => {
                         <p className="text-sm">Join Date</p>
                       </div>
                       <p className="text-xs font-semibold ">
-                        {formData.dateOfBirth || " 2024"}
+                        {formData.date_of_birth || "Not provided"}
                       </p>
                     </div>
 
@@ -285,7 +285,7 @@ const Section = () => {
                         <p className="text-sm">Birthday</p>
                       </div>
                       <p className="text-xs font-semibold ">
-                        {formData.date_of_birth || " 15-08-1990"}
+                        {formData.date_of_birth || "Not provided"}
                       </p>
                     </div>
                   </div>
