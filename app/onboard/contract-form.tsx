@@ -78,33 +78,47 @@ export default function CreateProfile() {
 
   useEffect(() => {
     const getUserInfo = async () => {
-      let userInfo = (await getUserByAddress(wallets[0]?.address)) as any;
-      let username = (await getUsernameByAddress(wallets[0]?.address)) as any;
-      setFormData({
-        first_name: userInfo?.basicInfo.firstName,
-        last_name: userInfo?.basicInfo.lastName,
-        username: username,
-        email: userInfo?.basicInfo.email,
-        home_address: userInfo?.basicInfo.homeAddress,
-        date_of_birth: userInfo?.basicInfo.dateOfBirth,
-        education: userInfo?.professionalInfo.education,
-        work_history: userInfo?.professionalInfo.workHistory,
-        phone_number: userInfo?.basicInfo.phoneNumber,
-        job_title: userInfo?.professionalInfo.jobTitle,
-        x: userInfo?.socialLinks.x,
-        instagram: userInfo?.socialLinks.instagram,
-        tiktok: userInfo?.socialLinks.tiktok,
-        youtube: userInfo?.socialLinks.youtube,
-        linkedin: userInfo?.socialLinks.linkedin,
-        info: userInfo?.professionalInfo.info,
-        skills: userInfo?.professionalInfo.skills,
-        imageUrl: userInfo?.professionalInfo.imageURL,
-      });
-      console.log(userInfo);
-      console.log(username);
+      const wallet = wallets[0];
+      if (!wallet) {
+        return;
+      }
+
+      try {
+        const provider = await wallet.getEthersProvider();
+        const userInfo = (await getUserByAddress(
+          wallet.address,
+          provider
+        )) as any;
+        const username = (await getUsernameByAddress(
+          wallet.address,
+          provider
+        )) as any;
+        setFormData({
+          first_name: userInfo?.basicInfo.firstName,
+          last_name: userInfo?.basicInfo.lastName,
+          username: username,
+          email: userInfo?.basicInfo.email,
+          home_address: userInfo?.basicInfo.homeAddress,
+          date_of_birth: userInfo?.basicInfo.dateOfBirth,
+          education: userInfo?.professionalInfo.education,
+          work_history: userInfo?.professionalInfo.workHistory,
+          phone_number: userInfo?.basicInfo.phoneNumber,
+          job_title: userInfo?.professionalInfo.jobTitle,
+          x: userInfo?.socialLinks.x,
+          instagram: userInfo?.socialLinks.instagram,
+          tiktok: userInfo?.socialLinks.tiktok,
+          youtube: userInfo?.socialLinks.youtube,
+          linkedin: userInfo?.socialLinks.linkedin,
+          info: userInfo?.professionalInfo.info,
+          skills: userInfo?.professionalInfo.skills,
+          imageUrl: userInfo?.professionalInfo.imageURL,
+        });
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
     };
     getUserInfo();
-  }, []);
+  }, [wallets]);
 
   const [errors, setErrors] = useState<any>({});
   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
@@ -258,12 +272,18 @@ export default function CreateProfile() {
         throw new Error("Required fields are missing.");
       }
 
+      const wallet = wallets[0];
+      if (!wallet) {
+        throw new Error("Connect your wallet to create an identity.");
+      }
+      const provider = await wallet.getEthersProvider();
       const receipt = await createUser(
         formData.username,
         basicInfo,
         professionalInfo,
         socialLinks,
-        visibility
+        visibility,
+        provider
       );
       console.log("User created:", receipt);
       toast({

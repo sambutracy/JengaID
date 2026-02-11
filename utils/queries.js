@@ -1,20 +1,19 @@
-import { ethers } from "ethers";
 import { contract } from "./index";
 
 // Function to parse error messages
 function parseErrorMsg(e) {
   const json = JSON.parse(JSON.stringify(e));
-  return json?.reason || json?.error?.message;
+  return json?.reason || json?.error?.message || e?.message;
 }
 
-export async function getUsernameByAddress(userAddress) {
+export async function getUsernameByAddress(userAddress, provider) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const username = await contractObj.getUsernameByAddress(userAddress);
     return username;
   } catch (e) {
     console.error("Error in getUsernameByAddress:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to fetch username.");
   }
 }
 
@@ -24,10 +23,11 @@ export async function createUser(
   basicInfo,
   professionalInfo,
   socialLinks,
-  visibility
+  visibility,
+  provider
 ) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const transactionResponse = await contractObj.createUser(
       username,
       basicInfo,
@@ -39,7 +39,7 @@ export async function createUser(
     return receipt;
   } catch (e) {
     console.error("Error in createUser:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to create user.");
   }
 }
 
@@ -49,10 +49,11 @@ export async function editUser(
   basicInfo,
   professionalInfo,
   socialLinks,
-  visibility
+  visibility,
+  provider
 ) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const transactionResponse = await contractObj.editUser(
       username,
       basicInfo,
@@ -64,14 +65,14 @@ export async function editUser(
     return receipt;
   } catch (e) {
     console.error("Error in editUser:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to edit user.");
   }
 }
 
 // Function to get user information by username
-export async function getUserByUsername(username) {
+export async function getUserByUsername(username, provider) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const user = await contractObj.getUserByUsername(username);
     return {
       basicInfo: {
@@ -107,14 +108,14 @@ export async function getUserByUsername(username) {
     };
   } catch (e) {
     console.error("Error in getUserByUsername:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to fetch user by username.");
   }
 }
 
 // Function to get user information by address
-export async function getUserByAddress(userAddress) {
+export async function getUserByAddress(userAddress, provider) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const user = await contractObj.getUserByAddress(userAddress);
     return {
       basicInfo: {
@@ -150,32 +151,32 @@ export async function getUserByAddress(userAddress) {
     };
   } catch (e) {
     console.error("Error in getUserByAddress:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to fetch user by address.");
   }
 }
 
 // Function to add a job ID that a user has applied to
-export async function addJob(username, jobId) {
+export async function addJob(username, jobId, provider) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const transactionResponse = await contractObj.addJob(username, jobId);
     const receipt = await transactionResponse.wait();
     return receipt;
   } catch (e) {
     console.error("Error in addJob:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to add job.");
   }
 }
 
 // Function to get all job IDs applied by a user
-export async function getJobs(username) {
+export async function getJobs(username, provider) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const jobIds = await contractObj.getJobs(username);
     return jobIds.map((jobId) => jobId.toString());
   } catch (e) {
     console.error("Error in getJobs:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to fetch jobs.");
   }
 }
 
@@ -186,10 +187,11 @@ export async function setVisibility(
   workHistory,
   phoneNumber,
   homeAddress,
-  dateOfBirth
+  dateOfBirth,
+  provider
 ) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const transactionResponse = await contractObj.setVisibility(
       username,
       education,
@@ -202,14 +204,14 @@ export async function setVisibility(
     return receipt;
   } catch (e) {
     console.error("Error in setVisibility:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to set visibility.");
   }
 }
 
 // Function to get the visibility of user information
-export async function getVisibility(username) {
+export async function getVisibility(username, provider) {
   try {
-    const contractObj = await contract();
+    const contractObj = await contract(provider);
     const visibility = await contractObj.getVisibility(username);
     return {
       education: visibility.education,
@@ -220,6 +222,6 @@ export async function getVisibility(username) {
     };
   } catch (e) {
     console.error("Error in getVisibility:", e);
-    return parseErrorMsg(e);
+    throw new Error(parseErrorMsg(e) || "Failed to fetch visibility.");
   }
 }
